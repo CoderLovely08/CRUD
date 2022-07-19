@@ -145,6 +145,27 @@ if (!$conn) {
             // ----------------------------------------------------
             //              To delete a record
             // ----------------------------------------------------
+            $("input[value='Update']").click(function() {
+                var id = $(this).attr("name");
+                id = id.split('-');
+                id = id[id.length - 1];
+                alert("Update button clicked with id: " + id);
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    data: {
+                        id: id
+                    },
+                    success: function(response) {
+                        alert("Record Update Successfully! with id: " + id);
+                        location.reload(true);
+                    }
+                });
+            })
+
+            // ----------------------------------------------------
+            //              To delete a record
+            // ----------------------------------------------------
             $("input[value='Delete']").click(function() {
                 var id = $(this).attr("name");
                 id = id.split('-');
