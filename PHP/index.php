@@ -30,9 +30,9 @@ if (!$conn) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
+        // if (window.history.replaceState) {
+        //     window.history.replaceState(null, null, window.location.href);
+        // }
     </script>
 
     <style>
@@ -62,7 +62,7 @@ if (!$conn) {
                     <input type="submit" id="insert" value="Create" name="create" class="btn btn-outline-primary col-lg-2">
                     <!-- <input type="submit" value="Read" name="read" class="btn btn-outline-warning col-lg-2"> -->
                     <!-- <input type="submit" value="Update" name="update" class="btn btn-outline-dark col-lg-2"> -->
-                    <!-- <input type="submit" value="Delete" name="delete" class="btn btn-outline-danger col-lg-2"> -->
+                    <!-- <input type="submit" value="Devare" name="devare" class="btn btn-outline-danger col-lg-2"> -->
                 </form>
             </div>
             <div class="right-col col-lg-12">
@@ -87,25 +87,25 @@ if (!$conn) {
                     for ($i = 0; $i < count($row); $i++) {
                         echo '
                         <tr>
-                        <td>' . $row[$i]['id'] . '</td>
-                        <td>' . $row[$i]['name'] . '</td>
-                        <td>' . $row[$i]['age'] . '</td>
-                        <td>' . $row[$i]['email'] . '</td>
-                        <td><input type="submit" value="Update" id="update" name="update-' . $row[$i]['id'] . '" class="btn btn-outline-dark col-lg-3">
-                        <input type="submit" value="Delete" id=delete name="delete-' . $row[$i]['id'] . '" class="btn btn-outline-danger col-lg-3"></td>
+                        <td class=id-"' . $row[$i]['id'] . '">' . $row[$i]['id'] . '</td>
+                        <td class=name-"' . $row[$i]['id'] . '">' . $row[$i]['name'] . '</td>
+                        <td class=age-"' . $row[$i]['id'] . '">' . $row[$i]['age'] . '</td>
+                        <td class=email-"' . $row[$i]['id'] . '">'  . $row[$i]['email'] . '</td>
+                        <td><input type="submit" data-toggle="modal" data-target="#modalLoginForm" value="Update" id="update" name="update-' . $row[$i]['id'] . '" class="btn btn-outline-dark col-lg-3">
+                        <input type="submit" value="Devare" id=devare name="devare-' . $row[$i]['id'] . '" class="btn btn-outline-danger col-lg-3"></td>
                         </tr>';
                         echo "\n";
                     }
                     // }
-                    if (isset($_POST['update'])) {
-                        $getName = $_POST['username'];  //get username
-                        $getAge = $_POST['age'];  //get age value
-                        $getEmail = $_POST['email'];  //get email value
-                        $query = "update userdata set email='$getEmail' where name='$getName'";
-                        $result = pg_query($conn, $query);
-                        if ($result) echo "Record Updated Successfully";
-                        else echo 'Error occured while updating record';
-                    }
+                    // if (isset($_POST['update'])) {
+                    //     $getName = $_POST['username'];  //get username
+                    //     $getAge = $_POST['age'];  //get age value
+                    //     $getEmail = $_POST['email'];  //get email value
+                    //     $query = "update userdata set email='$getEmail' where name='$getName'";
+                    //     $result = pg_query($conn, $query);
+                    //     if ($result) echo "Record Updated Successfully";
+                    //     else echo 'Error occured while updating record';
+                    // }
                     ?>
             </div>
         </div>
@@ -117,71 +117,108 @@ if (!$conn) {
             // ----------------------------------------------------
             //              To add a record
             // ----------------------------------------------------
-            $("input[value='Create']").click(function() {
-                var username = $('#username').val();
-                var age = $('#age').val();
-                var email = $('#email').val();
-                $.ajax({
-                    url: 'process.php',
-                    type: 'post',
-                    data: {
-                        username: username,
-                        age: age,
-                        email: email
-                    },
-                    success: function(response) {
-                        alert("Record Inserted Successfully!");
-                        location.reload(true);
-                    },
-                    error: function(response) {
-                        alert("Some error");
-                    }
-                }).fail(function(status) {
-                    alert("error");
-                });
-
-            })
+            // $("input[value='Create']").click(function() {
+            //     var username = $('#username').val();
+            //     var age = $('#age').val();
+            //     var email = $('#email').val();
+            //     var add=true;
+            //     $.ajax({
+            //         url: 'process.php',
+            //         type: 'post',
+            //         data: {
+            //             add:add,
+            //             username: username,
+            //             age: age,
+            //             email: email
+            //         },
+            //         success: function(response) {
+            //             alert("Record Inserted Successfully!");
+            //             location.reload(true);
+            //         },
+            //         error: function(response) {
+            //             alert("Some error");
+            //         }
+            //     }).fail(function(status) {
+            //         alert("error");
+            //     });
+            //     add=false;
+            // })
 
             // ----------------------------------------------------
-            //              To delete a record
+            //              To update a record
             // ----------------------------------------------------
             $("input[value='Update']").click(function() {
                 var id = $(this).attr("name");
                 id = id.split('-');
                 id = id[id.length - 1];
-                alert("Update button clicked with id: " + id);
-                $.ajax({
-                    url: '',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        alert("Record Update Successfully! with id: " + id);
-                        location.reload(true);
-                    }
-                });
+                var currentRow = $(this).closest("tr");
+                var col1 = currentRow.find("td:eq(1)").text();
+                var col2 = currentRow.find("td:eq(2)").text();
+                var col3 = currentRow.find("td:eq(3)").text();
+                populateModalData(id, col1, col2, col3);
+                // alert("Update button clicked with id: " + id);
+
             })
 
-            // ----------------------------------------------------
-            //              To delete a record
-            // ----------------------------------------------------
-            $("input[value='Delete']").click(function() {
-                var id = $(this).attr("name");
-                id = id.split('-');
-                id = id[id.length - 1];
-                $.ajax({
-                    url: 'process.php',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(response) {
-                        alert("Record Deleted Successfully! with id: " + id);
-                        location.reload(true);
-                    }
+            function populateModalData(id, username, age, email) {
+                $('#defaultForm-name').val(username);
+                $('#defaultForm-age').val(age);
+                $('#defaultForm-email').val(email);
+                // time.sleep(100);
+                var updatedUsername;
+                var updatedAge;
+                var updatedEmail;
+                $('input').on('change', function() {
+                    updatedUsername = $('#defaultForm-name').val();
+                    updatedAge = $('#defaultForm-age').val();
+                    updatedEmail = $('#defaultForm-email').val();
                 });
-            })
+                // alert(updatedAge);
+                var update = true;
+                // console.log(updatedAge);
+                $('#updateRecord').click(function() {
+                    $.ajax({
+                        url: 'process.php',
+                        type: 'post',
+                        data: {
+                            update: update,
+                            id: id,
+                            updatedUsername: updatedUsername,
+                            updatedAge: updatedAge,
+                            updatedEmail: updatedEmail
+                        },
+                        success: function(response) {
+                            alert("Record Updated Successfully! with id: " + id);
+                            location.reload(true);
+                        }
+                    });
+                });
+                update = false;
+                // });
+            }
+
+            // ----------------------------------------------------
+            //              To devare a record
+            // ----------------------------------------------------
+            // $("input[value='Devare']").click(function() {
+            //     var id = $(this).attr("name");
+            //     id = id.split('-');
+            //     id = id[id.length - 1];
+            //     var isdevare = true;
+            //     $.ajax({
+            //         url: 'process.php',
+            //         type: 'post',
+            //         data: {
+            //             devare:isdevare,
+            //             id: id
+            //         },
+            //         success: function(response) {
+            //             alert("Record Devared Successfully! with id: " + id);
+            //             location.reload(true);
+            //         }
+            //     });
+            // })
+            // isdevare=false;
         });
     </script>
 
@@ -189,7 +226,36 @@ if (!$conn) {
     pg_close($conn);
     ?>
 
+    <div class=" modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-3">
+                        <i class="fas fa-envelope prefix grey-text"></i>
+                        <input type="text" id="defaultForm-name" class="form-control validate" required>
+                    </div>
+                    <div class="md-form mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
+                        <input type="number" id="defaultForm-age" class="form-control validate" required>
+                    </div>
+                    <div class="md-form mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
+                        <input type="email" id="defaultForm-email" class="form-control validate" required>
+                    </div>
 
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button id="updateRecord" data-dismiss="modal" class="btn btn-default">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 

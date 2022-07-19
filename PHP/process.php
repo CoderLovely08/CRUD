@@ -8,8 +8,12 @@ if (!$conn) {
     exit();
 }
 
+$add = $_POST['add'];
+$delete = $_POST['delete'];
+$update = $_POST['update'];
+
 // Add a record to database
-if (isset($_POST['username'])) {
+if ($add) {
     $getName = $_POST['username'];  //get username
     $getAge = $_POST['age'];  //get age value
     $getEmail = $_POST['email'];  //get email value
@@ -20,10 +24,28 @@ if (isset($_POST['username'])) {
 }
 
 // Delete a record from the database
-if (isset($_POST['id'])) {
+if ($delete) {
     $userId = $_POST['id'];
     $query = "DELETE FROM userdata where id='$userId'";
     $result = pg_query($conn, $query);
     if ($result) echo "Record Deleted Successfully";
     else echo 'Error occured while deleting record';
+}
+
+// update record
+if ($update) {
+    $userId = $_POST['id'];
+    $getName = $_POST['updatedUsername'];  //get username
+    $getAge = $_POST['updatedAge'];  //get age value
+    $getEmail = $_POST['updatedEmail'];  //get email value
+
+    $filename = 'test.txt';
+
+    $contents = "username: " . $getName . " Age: '$getAge' Email: $getEmail ";
+
+    file_put_contents($filename, $contents);
+
+    $query = "UPDATE userdata SET name ='$getName',age='$getAge' ,email='$getEmail'  WHERE id=$userId";
+    $result = pg_query($conn, $query);
+    if ($result) echo "Record Updated Successfully";
 }
