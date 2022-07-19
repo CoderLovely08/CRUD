@@ -118,10 +118,9 @@ if (!$conn) {
             //              To add a record
             // ----------------------------------------------------
             $("input[value='Create']").click(function() {
-                var username=$('#username').val();
-                var age=$('#age').val();
-                var email=$('#email').val();
-                alert(username);
+                var username = $('#username').val();
+                var age = $('#age').val();
+                var email = $('#email').val();
                 $.ajax({
                     url: 'process.php',
                     type: 'post',
@@ -131,12 +130,18 @@ if (!$conn) {
                         email: email
                     },
                     success: function(response) {
-                        alert("Record Inserted Successfully! with id: " + id);
+                        alert("Record Inserted Successfully!");
                         location.reload(true);
+                    },
+                    error: function(response) {
+                        alert("Some error");
                     }
+                }).fail(function(status) {
+                    alert("error");
                 });
+
             })
-            
+
             // ----------------------------------------------------
             //              To delete a record
             // ----------------------------------------------------
