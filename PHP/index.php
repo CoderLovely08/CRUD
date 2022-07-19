@@ -117,16 +117,15 @@ if (!$conn) {
             // ----------------------------------------------------
             //              To add a record
             // ----------------------------------------------------
-            
-            $('#insert').click(function() {
-                var username = $($username).val();
-                var age = $($age).val();
-                var email = $($email).val();
+            $("input[value='Create']").click(function() {
+                var username=$('#username').val();
+                var age=$('#age').val();
+                var email=$('#email').val();
+                alert(username);
                 $.ajax({
                     url: 'process.php',
                     type: 'post',
                     data: {
-                        create: create,
                         username: username,
                         age: age,
                         email: email

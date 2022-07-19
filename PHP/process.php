@@ -9,7 +9,7 @@ if (!$conn) {
 }
 
 // Add a record to database
-if (isset($_POST['create'])) {
+if (isset($_POST['username'])) {
     $getName = $_POST['username'];  //get username
     $getAge = $_POST['age'];  //get age value
     $getEmail = $_POST['email'];  //get email value
