@@ -67,7 +67,7 @@ if (!$conn) {
             <div class="right-col col-lg-12">
                 <h2>Table Will be Displayed here</h2>
                 <?php
-                $query = 'SELECT * FROM userdata';
+                $query = 'SELECT * FROM userdata order by id';
                 $results = pg_query($conn, $query) or die('Query failed: ' . pg_last_error());
                 $row = pg_fetch_all($results);
                 ?>
