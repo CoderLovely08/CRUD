@@ -67,7 +67,7 @@ if (!$conn) {
             <div class="right-col col-lg-12">
                 <h2>Table Will be Displayed here</h2>
                 <?php
-                $query = 'SELECT * FROM userdata order by id';
+                $query = 'SELECT * FROM userdata';
                 $results = pg_query($conn, $query) or die('Query failed: ' . pg_last_error());
                 $row = pg_fetch_all($results);
                 ?>
@@ -89,8 +89,8 @@ if (!$conn) {
                         <td class=name-"' . $row[$i]['id'] . '">' . $row[$i]['name'] . '</td>
                         <td class=age-"' . $row[$i]['id'] . '">' . $row[$i]['age'] . '</td>
                         <td class=email-"' . $row[$i]['id'] . '">'  . $row[$i]['email'] . '</td>
-                        <td><input type="submit" data-toggle="modal" data-target="#modalLoginForm" value="Update" id="update" name="update-' . $row[$i]['id'] . '" class="btn btn-outline-dark col-lg-3">
-                        <input type="submit" value="Delete" id=delete name="delete-' . $row[$i]['id'] . '" class="btn btn-outline-danger col-lg-3"></td>
+                        <td><input type="submit" data-toggle="modal" data-target="#modalLoginForm" value="Update" id="update" name="update-' . $row[$i]['id'] . '" class="btn btn-outline-dark col-lg-4">
+                        <input type="submit" value="Delete" id=delete name="delete-' . $row[$i]['id'] . '" class="btn btn-outline-danger col-lg-4"></td>
                         </tr>';
                         echo "\n";
                     }
