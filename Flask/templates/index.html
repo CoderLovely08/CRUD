@@ -24,9 +24,31 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="alert alert-primary">
-            Work in Progress!
+    <div class="container body-dark">
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Options</th>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        <td> {{ row.id }} </td>
+                        <td> {{ row.name }} </td>
+                        <td> {{ row.age }} </td>
+                        <td> {{ row.email }} </td>
+                        <td>
+                            <button class="btn btn-success">Update</button>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
